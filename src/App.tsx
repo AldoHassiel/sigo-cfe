@@ -1,10 +1,11 @@
+import LayoutPrincipal from "./layouts/LayoutPrincipal";
+import ContenedorTabs from "./components/ContenedorTabs";
+
 function App() {
   return (
-    <>
-      <h1 className="text-center text-2xl font-bold">
-        Sistema Integral de gestión comercial de la CFE
-      </h1>
-    </>
+    <LayoutPrincipal>
+      <ContenedorTabs />
+    </LayoutPrincipal>
   );
 }
 
