@@ -4,7 +4,7 @@ import Modulos from "./Modulos";
 import { CATALOGO } from "@/modulos/catalogo";
 import { useTabs, ID_MODULOS } from "@/hooks/useTabs";
 
-const ESTILO_PANEL = "bg-gray-300 p-6 rounded-b-md rounded-tr-md";
+const ESTILO_PANEL = "bg-gray-200/90 p-6 rounded-b-md rounded-tr-md";
 
 export default function ContenedorTabs() {
   const { abiertas, activa, abrir, cerrar, setActiva } = useTabs();

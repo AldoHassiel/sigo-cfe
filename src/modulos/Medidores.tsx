@@ -81,7 +81,7 @@ export default function Medidores() {
       </div>
 
       <Table className="mt-5">
-        <TableHeader>
+        <TableHeader className = "bg-white">
           <TableRow>
             <TableHead>Medidor</TableHead>
             <TableHead>RPE</TableHead>

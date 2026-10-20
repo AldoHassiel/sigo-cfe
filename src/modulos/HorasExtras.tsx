@@ -1,20 +1,80 @@
+import { Spinner } from "@/components/ui/spinner";
 import useHorasExtras from "@/hooks/useHorasExtras";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+import { CloudUploadIcon } from "lucide-react";
+
+const estiloFondoFila = {
+  excede: "bg-red-300",
+  normal: "bg-white",
+};
 
 function HorasExtras() {
   const { horasExtras, cargando } = useHorasExtras();
 
-  if (cargando) return <p>Cargando...</p>;
+  if (cargando)
+    return (
+      <div className="grid place-items-center">
+        <Spinner className="size-10 text-green-600" />
+      </div>
+    );
+
+  if (!cargando && horasExtras.length == 0) {
+    return <div>SUBIR DATOS papoi</div>;
+  }
 
   return (
     <div>
-      <h2 className="text-xl font-bold">Horas extras</h2>
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Horas extras</h2>
 
-      {horasExtras.map((registro) => (
-        <p key={registro.rpe}>
-          {registro.rpe} - {registro.horas_totales} -{" "}
-          {registro.excede_limite_semanal ? "Excede" : "OK"}
-        </p>
-      ))}
+        <div className="flex items-center gap-5">
+          <div className="flex items-center gap-1">
+            <span className="block w-3 h-3 bg-red-500 rounded-full" />
+            <span>Excede</span>
+          </div>
+
+          <div className="flex items-center gap-1">
+            <span className="block w-3 h-3 bg-white rounded-full" />
+            <span>Normal</span>
+          </div>
+        </div>
+
+        <CloudUploadIcon className="cursor-pointer" />
+        
+      </div>
+
+      <Table className="mt-5">
+        <TableHeader className="bg-white">
+          <TableRow>
+            <TableHead>RPE</TableHead>
+            <TableHead>Horas totales</TableHead>
+            <TableHead>Estado</TableHead>
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
+          {horasExtras.map((horaExtra) => (
+            <TableRow
+              key={horaExtra.rpe}
+              className={`${estiloFondoFila[horaExtra.excede_limite_semanal ? "excede" : "normal"]}`}
+            >
+              <TableCell>{horaExtra.rpe}</TableCell>
+              <TableCell>{horaExtra.horas_totales}</TableCell>
+              <TableCell>
+                {horaExtra.excede_limite_semanal ? "Excede" : "Normal"}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 }

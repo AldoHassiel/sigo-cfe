@@ -82,7 +82,7 @@ export default function Sellos() {
       </div>
 
       <Table className="mt-5">
-        <TableHeader>
+        <TableHeader className = "bg-white">
           <TableRow>
             <TableHead>Sello</TableHead>
             <TableHead>RPE</TableHead>
