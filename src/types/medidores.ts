@@ -1,6 +1,6 @@
 export interface Medidor {
   nummedidor: string;
-  cvarea: string;
+  cvearea: string;
   rpe: string;
   fechaultimomovimiento: string;
   nombre_area: string;

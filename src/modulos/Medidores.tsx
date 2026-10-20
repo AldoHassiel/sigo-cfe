@@ -18,7 +18,7 @@ import useMedidores from "@/hooks/useMedidores";
 import { CloudUploadIcon } from "lucide-react";
 
 const estiloFondoFila = {
-  vencido: "bg-red-400",
+  vencido: "bg-red-300",
   proximo: "bg-orange-400",
   vigente: "bg-white",
 };
@@ -36,7 +36,7 @@ export default function Medidores() {
   }
 
   if (!cargando && medidores.length == 0 && filtroEstado == "") {
-    return <div>SUBIR DATOS</div>;
+    return <div>SUBIR DATOS papoi</div>;
   }
 
   return (
@@ -46,7 +46,7 @@ export default function Medidores() {
 
         <div className="flex items-center gap-5">
           <div className="flex items-center gap-1">
-            <span className="block w-3 h-3 bg-red-800 rounded-full" />
+            <span className="block w-3 h-3 bg-red-500 rounded-full" />
             <span>Vencidos</span>
           </div>
 
