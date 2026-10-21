@@ -25,8 +25,13 @@ const estiloFondoFila = {
 };
 
 export default function Medidores() {
-  const { medidores, filtroEstado, cargando, filtrarPorEstado } =
-    useMedidores();
+  const {
+    medidores,
+    filtroEstado,
+    cargando,
+    filtrarPorEstado,
+    subirMedidores,
+  } = useMedidores();
 
   if (cargando) {
     return (
@@ -37,7 +42,7 @@ export default function Medidores() {
   }
 
   if (!cargando && medidores.length == 0 && filtroEstado == "") {
-    return <SubirExcel />;
+    return <SubirExcel onExcelCargado={subirMedidores} />;
   }
 
   return (
@@ -82,7 +87,7 @@ export default function Medidores() {
       </div>
 
       <Table className="mt-5">
-        <TableHeader className = "bg-white">
+        <TableHeader className="bg-white">
           <TableRow>
             <TableHead>Medidor</TableHead>
             <TableHead>RPE</TableHead>
