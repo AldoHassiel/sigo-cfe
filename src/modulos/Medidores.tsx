@@ -1,3 +1,4 @@
+import SubirExcel from "@/components/SubirExcel";
 import {
   Select,
   SelectContent,
@@ -36,7 +37,7 @@ export default function Medidores() {
   }
 
   if (!cargando && medidores.length == 0 && filtroEstado == "") {
-    return <div>SUBIR DATOS papoi</div>;
+    return <SubirExcel />;
   }
 
   return (
