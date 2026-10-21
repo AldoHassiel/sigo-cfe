@@ -24,25 +24,88 @@ function useHorasExtras() {
 
       setHorasExtras(datos.datos);
     } catch (error) {
-      if (isAxiosError<APIRespuesta<null>>(error) && error.response) {
-        // Errores mandados por la api
-        const { mensaje } = error.response.data;
-        console.error(mensaje);
-      } else {
-        // Errores mandados al intentar hacer la peticion
-        console.log("Ha ocurrido un error inesperado: " + error);
+      if (isAxiosError<APIRespuesta<null>>(error)) {
+        if (error.response) {
+          throw new Error(error.response.data.mensaje);
+        }
+
+        throw new Error("No se pudo conectar con el servidor.");
       }
+
+      throw error;
     } finally {
       setCargando(false);
     }
   }
 
+  async function subirHorasExtrasExcel(excel: File) {
+    const formData = new FormData();
+    formData.append("archivo", excel);
+
+    try {
+      const peticion = await api.post<APIRespuesta<HorasExtras[]>>(
+        "/horas-extras/importar",
+        formData,
+      );
+      const datos = peticion.data;
+
+      if (!datos.exito) {
+        throw new Error(datos.mensaje);
+      }
+
+      setHorasExtras(datos.datos);
+    } catch (error) {
+      if (isAxiosError<APIRespuesta<null>>(error)) {
+        if (error.response) {
+          throw new Error(error.response.data.mensaje);
+        }
+
+        throw new Error("No se pudo conectar con el servidor.");
+      }
+
+      throw error;
+    }
+  }
+
+  async function subirHorasExtrasTexto(tabla: string) {
+    const formData = new FormData();
+    formData.append("texto", tabla);
+
+    try {
+      const peticion = await api.post<APIRespuesta<HorasExtras[]>>(
+        "/horas-extras/importar-texto",
+        formData,
+      );
+      const datos = peticion.data;
+
+      if (!datos.exito) {
+        throw new Error(datos.mensaje);
+      }
+
+      setHorasExtras(datos.datos);
+    } catch (error) {
+      if (isAxiosError<APIRespuesta<null>>(error)) {
+        if (error.response) {
+          throw new Error(error.response.data.mensaje);
+        }
+
+        throw new Error("No se pudo conectar con el servidor.");
+      }
+
+      throw error;
+    }
+  }
+
   useEffect(() => {
     obtenerHorasExtras();
-
   }, []);
 
-  return {horasExtras, cargando};
+  return {
+    horasExtras,
+    cargando,
+    subirHorasExtrasExcel,
+    subirHorasExtrasTexto,
+  };
 }
 
 export default useHorasExtras;

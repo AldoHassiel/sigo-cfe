@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/table";
 
 import { CloudUploadIcon } from "lucide-react";
+import SubirExcel from "@/components/SubirExcel";
 
 const estiloFondoFila = {
   excede: "bg-red-300",
@@ -17,7 +18,12 @@ const estiloFondoFila = {
 };
 
 function HorasExtras() {
-  const { horasExtras, cargando } = useHorasExtras();
+  const {
+    horasExtras,
+    cargando,
+    subirHorasExtrasExcel,
+    subirHorasExtrasTexto,
+  } = useHorasExtras();
 
   if (cargando)
     return (
@@ -27,7 +33,13 @@ function HorasExtras() {
     );
 
   if (!cargando && horasExtras.length == 0) {
-    return <div>SUBIR DATOS papoi</div>;
+    return (
+      <SubirExcel
+        permitirTexto
+        onExcelCargado={subirHorasExtrasExcel}
+        onTextoCargado={subirHorasExtrasTexto}
+      />
+    );
   }
 
   return (
@@ -48,7 +60,6 @@ function HorasExtras() {
         </div>
 
         <CloudUploadIcon className="cursor-pointer" />
-        
       </div>
 
       <Table className="mt-5">

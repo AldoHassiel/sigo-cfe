@@ -1,3 +1,4 @@
+import SubirExcel from "@/components/SubirExcel";
 import {
   Select,
   SelectContent,
@@ -26,7 +27,8 @@ const estiloFondoFila: Record<Sello["estado"], string> = {
 };
 
 export default function Sellos() {
-  const { sellos, filtroEstado, cargando, filtrarPorEstado } = useSellos();
+  const { sellos, filtroEstado, cargando, filtrarPorEstado, subirSellos } =
+    useSellos();
 
   if (cargando) {
     return (
@@ -37,7 +39,7 @@ export default function Sellos() {
   }
 
   if (!cargando && sellos.length == 0 && filtroEstado == "") {
-    return <div>No hay sellos cargados</div>;
+    return <SubirExcel onExcelCargado={subirSellos} />;
   }
 
   return (
@@ -82,7 +84,7 @@ export default function Sellos() {
       </div>
 
       <Table className="mt-5">
-        <TableHeader className = "bg-white">
+        <TableHeader className="bg-white">
           <TableRow>
             <TableHead>Sello</TableHead>
             <TableHead>RPE</TableHead>

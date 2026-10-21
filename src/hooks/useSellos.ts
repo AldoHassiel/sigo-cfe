@@ -24,16 +24,46 @@ function useSellos() {
 
       setTodosLosSellos(sellos);
     } catch (error) {
-      if (isAxiosError<APIRespuesta<null>>(error) && error.response) {
-        // Errores mandados por la api
-        const { mensaje } = error.response.data;
-        console.error(mensaje);
-      } else {
-        // Errores mandados al intentar hacer la peticion
-        console.log("Ha ocurrido un error inesperado: " + error);
+      if (isAxiosError<APIRespuesta<null>>(error)) {
+        if (error.response) {
+          throw new Error(error.response.data.mensaje);
+        }
+
+        throw new Error("No se pudo conectar con el servidor.");
       }
+
+      throw error;
     } finally {
       setCargando(false);
+    }
+  }
+
+  async function subirSellos(excel: File) {
+    const formData = new FormData();
+    formData.append("archivo", excel);
+
+    try {
+      const peticion = await api.post<APIRespuesta<Sello[]>>(
+        "/sellos/importar",
+        formData,
+      );
+      const datos = peticion.data;
+
+      if (!datos.exito) {
+        throw new Error(datos.mensaje);
+      }
+
+      setTodosLosSellos(datos.datos);
+    } catch (error) {
+      if (isAxiosError<APIRespuesta<null>>(error)) {
+        if (error.response) {
+          throw new Error(error.response.data.mensaje);
+        }
+
+        throw new Error("No se pudo conectar con el servidor.");
+      }
+
+      throw error;
     }
   }
 
@@ -56,7 +86,7 @@ function useSellos() {
     ? todosLosSellos.filter((sello) => sello.estado === filtroEstado)
     : todosLosSellos;
 
-  return { sellos, filtroEstado, cargando, filtrarPorEstado };
+  return { sellos, filtroEstado, cargando, filtrarPorEstado, subirSellos };
 }
 
 export default useSellos;
