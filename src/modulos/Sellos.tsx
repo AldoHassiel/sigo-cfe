@@ -15,6 +15,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import useSellos from "@/hooks/useSellos";
 import { cn } from "@/lib/utils";
 import type { Sello } from "@/types/sellos";
@@ -27,8 +32,14 @@ const estiloFondoFila: Record<Sello["estado"], string> = {
 };
 
 export default function Sellos() {
-  const { sellos, filtroEstado, cargando, filtrarPorEstado, subirSellos } =
-    useSellos();
+  const {
+    sellos,
+    filtroEstado,
+    cargando,
+    filtrarPorEstado,
+    subirSellos,
+    eliminarSellos,
+  } = useSellos();
 
   if (cargando) {
     return (
@@ -79,7 +90,17 @@ export default function Sellos() {
             </SelectContent>
           </Select>
 
-          <CloudUploadIcon className="cursor-pointer" />
+          <Tooltip>
+            <TooltipTrigger>
+              <CloudUploadIcon
+                className="cursor-pointer"
+                onClick={eliminarSellos}
+              />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Subir archivos</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
       </div>
 

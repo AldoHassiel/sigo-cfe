@@ -11,6 +11,11 @@ import {
 
 import { CloudUploadIcon } from "lucide-react";
 import SubirExcel from "@/components/SubirExcel";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const estiloFondoFila = {
   excede: "bg-red-300",
@@ -23,6 +28,7 @@ function HorasExtras() {
     cargando,
     subirHorasExtrasExcel,
     subirHorasExtrasTexto,
+    eliminarHoras,
   } = useHorasExtras();
 
   if (cargando)
@@ -59,7 +65,17 @@ function HorasExtras() {
           </div>
         </div>
 
-        <CloudUploadIcon className="cursor-pointer" />
+        <Tooltip>
+          <TooltipTrigger>
+            <CloudUploadIcon
+              className="cursor-pointer"
+              onClick={eliminarHoras}
+            />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Subir archivos</p>
+          </TooltipContent>
+        </Tooltip>
       </div>
 
       <Table className="mt-5">

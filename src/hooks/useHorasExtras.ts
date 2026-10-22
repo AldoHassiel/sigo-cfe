@@ -96,6 +96,10 @@ function useHorasExtras() {
     }
   }
 
+  function eliminarHoras() {
+    setHorasExtras([]);
+  }
+
   useEffect(() => {
     obtenerHorasExtras();
   }, []);
@@ -105,6 +109,7 @@ function useHorasExtras() {
     cargando,
     subirHorasExtrasExcel,
     subirHorasExtrasTexto,
+    eliminarHoras,
   };
 }
 

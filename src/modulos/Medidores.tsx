@@ -15,6 +15,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import useMedidores from "@/hooks/useMedidores";
 import { CloudUploadIcon } from "lucide-react";
 
@@ -31,6 +36,7 @@ export default function Medidores() {
     cargando,
     filtrarPorEstado,
     subirMedidores,
+    eliminarMedidores,
   } = useMedidores();
 
   if (cargando) {
@@ -82,7 +88,17 @@ export default function Medidores() {
             </SelectContent>
           </Select>
 
-          <CloudUploadIcon className="cursor-pointer" />
+          <Tooltip>
+            <TooltipTrigger>
+              <CloudUploadIcon
+                className="cursor-pointer"
+                onClick={eliminarMedidores}
+              />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Subir archivos</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
       </div>
 

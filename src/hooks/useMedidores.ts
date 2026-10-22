@@ -78,6 +78,10 @@ function useMedidores() {
     setFiltroEstado(filtro);
   }
 
+  function eliminarMedidores() {
+    setTodosLosMedidores([]);
+  }
+
   useEffect(() => {
     obtenerMedidores();
   }, []);
@@ -92,6 +96,7 @@ function useMedidores() {
     cargando,
     filtrarPorEstado,
     subirMedidores,
+    eliminarMedidores,
   };
 }
 

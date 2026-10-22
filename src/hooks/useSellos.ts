@@ -78,6 +78,10 @@ function useSellos() {
     setFiltroEstado(filtro);
   }
 
+  function eliminarSellos() {
+    setTodosLosSellos([]);
+  }
+
   useEffect(() => {
     obtenerSellos();
   }, []);
@@ -86,7 +90,14 @@ function useSellos() {
     ? todosLosSellos.filter((sello) => sello.estado === filtroEstado)
     : todosLosSellos;
 
-  return { sellos, filtroEstado, cargando, filtrarPorEstado, subirSellos };
+  return {
+    sellos,
+    filtroEstado,
+    cargando,
+    filtrarPorEstado,
+    subirSellos,
+    eliminarSellos,
+  };
 }
 
 export default useSellos;
