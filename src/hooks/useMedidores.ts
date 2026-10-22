@@ -81,6 +81,9 @@ function useMedidores() {
 
   function eliminarMedidores() {
     setTodosLosMedidores([]);
+    // Limpia los filtros para que se muestre la pantalla de subir Excel
+    setFiltroEstado("");
+    setFiltroArea(null);
   }
 
   useEffect(() => {
