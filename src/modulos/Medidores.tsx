@@ -1,3 +1,4 @@
+import FiltroArea from "@/components/FiltroArea";
 import SubirExcel from "@/components/SubirExcel";
 import {
   Select,
@@ -33,8 +34,10 @@ export default function Medidores() {
   const {
     medidores,
     filtroEstado,
+    filtroArea,
     cargando,
     filtrarPorEstado,
+    filtrarPorArea,
     subirMedidores,
     eliminarMedidores,
   } = useMedidores();
@@ -47,7 +50,12 @@ export default function Medidores() {
     );
   }
 
-  if (!cargando && medidores.length == 0 && filtroEstado == "") {
+  if (
+    !cargando &&
+    medidores.length == 0 &&
+    filtroEstado == "" &&
+    !filtroArea
+  ) {
     return <SubirExcel onExcelCargado={subirMedidores} />;
   }
 
@@ -75,6 +83,8 @@ export default function Medidores() {
 
         <div className="flex items-center gap-3">
           <p className="font-bold">Filtros</p>
+
+          <FiltroArea onAreaChange={filtrarPorArea} />
 
           <Select defaultValue="Todos" onValueChange={filtrarPorEstado}>
             <SelectTrigger>
@@ -114,6 +124,14 @@ export default function Medidores() {
         </TableHeader>
 
         <TableBody>
+          {medidores.length == 0 && (
+            <TableRow className="bg-white">
+              <TableCell colSpan={5} className="text-center">
+                No hay medidores con estos filtros
+              </TableCell>
+            </TableRow>
+          )}
+
           {medidores.map((medidor) => (
             <TableRow
               key={medidor.nummedidor}

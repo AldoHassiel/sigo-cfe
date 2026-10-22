@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 function useSellos() {
   const [todosLosSellos, setTodosLosSellos] = useState<Sello[]>([]);
   const [filtroEstado, setFiltroEstado] = useState("");
+  const [filtroArea, setFiltroArea] = useState<string | null>(null);
   const [cargando, setCargando] = useState(true);
 
   async function obtenerSellos() {
@@ -80,21 +81,29 @@ function useSellos() {
 
   function eliminarSellos() {
     setTodosLosSellos([]);
+    // Limpia los filtros para que se muestre la pantalla de subir Excel
+    setFiltroEstado("");
+    setFiltroArea(null);
   }
 
   useEffect(() => {
     obtenerSellos();
   }, []);
 
-  const sellos = filtroEstado
-    ? todosLosSellos.filter((sello) => sello.estado === filtroEstado)
-    : todosLosSellos;
+  // Aplica los dos filtros a la vez; si un filtro está vacío, no descarta nada
+  const sellos = todosLosSellos.filter(
+    (sello) =>
+      (!filtroEstado || sello.estado === filtroEstado) &&
+      (!filtroArea || sello.cvearea === filtroArea),
+  );
 
   return {
     sellos,
     filtroEstado,
+    filtroArea,
     cargando,
     filtrarPorEstado,
+    filtrarPorArea: setFiltroArea,
     subirSellos,
     eliminarSellos,
   };

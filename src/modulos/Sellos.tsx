@@ -1,3 +1,4 @@
+import FiltroArea from "@/components/FiltroArea";
 import SubirExcel from "@/components/SubirExcel";
 import {
   Select,
@@ -35,8 +36,10 @@ export default function Sellos() {
   const {
     sellos,
     filtroEstado,
+    filtroArea,
     cargando,
     filtrarPorEstado,
+    filtrarPorArea,
     subirSellos,
     eliminarSellos,
   } = useSellos();
@@ -49,7 +52,7 @@ export default function Sellos() {
     );
   }
 
-  if (!cargando && sellos.length == 0 && filtroEstado == "") {
+  if (!cargando && sellos.length == 0 && filtroEstado == "" && !filtroArea) {
     return <SubirExcel onExcelCargado={subirSellos} />;
   }
 
@@ -77,6 +80,8 @@ export default function Sellos() {
 
         <div className="flex items-center gap-3">
           <p className="font-bold">Filtros</p>
+
+          <FiltroArea onAreaChange={filtrarPorArea} />
 
           <Select defaultValue="Todos" onValueChange={filtrarPorEstado}>
             <SelectTrigger>
@@ -116,6 +121,14 @@ export default function Sellos() {
         </TableHeader>
 
         <TableBody>
+          {sellos.length == 0 && (
+            <TableRow className="bg-white">
+              <TableCell colSpan={5} className="text-center">
+                No hay sellos con estos filtros
+              </TableCell>
+            </TableRow>
+          )}
+
           {sellos.map((sello) => (
             <TableRow
               key={sello.numsello}

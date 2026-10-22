@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 function useMedidores() {
   const [todosLosMedidores, setTodosLosMedidores] = useState<Medidor[]>([]);
   const [filtroEstado, setFiltroEstado] = useState("");
+  const [filtroArea, setFiltroArea] = useState<string | null>(null);
   const [cargando, setCargando] = useState(true);
 
   async function obtenerMedidores() {
@@ -86,15 +87,20 @@ function useMedidores() {
     obtenerMedidores();
   }, []);
 
-  const medidores = filtroEstado
-    ? todosLosMedidores.filter((medidor) => medidor.estado === filtroEstado)
-    : todosLosMedidores;
+  // Aplica los dos filtros a la vez; si un filtro está vacío, no descarta nada
+  const medidores = todosLosMedidores.filter(
+    (medidor) =>
+      (!filtroEstado || medidor.estado === filtroEstado) &&
+      (!filtroArea || medidor.cvearea === filtroArea),
+  );
 
   return {
     medidores,
     filtroEstado,
+    filtroArea,
     cargando,
     filtrarPorEstado,
+    filtrarPorArea: setFiltroArea,
     subirMedidores,
     eliminarMedidores,
   };
