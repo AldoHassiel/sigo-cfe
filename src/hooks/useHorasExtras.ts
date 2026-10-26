@@ -13,7 +13,7 @@ function useHorasExtras() {
       setCargando(true);
 
       const peticion =
-        await api.get<APIRespuesta<HorasExtras[]>>("/horas-extras");
+        await api.get<APIRespuesta<HorasExtras[]>>("/horas-extras/");
       const datos = peticion.data;
       const horasExtras = datos.datos;
 

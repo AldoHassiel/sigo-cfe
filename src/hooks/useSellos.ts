@@ -14,7 +14,7 @@ function useSellos() {
     try {
       setCargando(true);
 
-      const peticion = await api.get<APIRespuesta<Sello[]>>("/sellos");
+      const peticion = await api.get<APIRespuesta<Sello[]>>("/sellos/");
       const datos = peticion.data;
       const sellos = datos.datos;
 

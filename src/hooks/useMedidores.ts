@@ -14,7 +14,7 @@ function useMedidores() {
     try {
       setCargando(true);
 
-      const peticion = await api.get<APIRespuesta<Medidor[]>>("/medidores");
+      const peticion = await api.get<APIRespuesta<Medidor[]>>("/medidores/");
       const datos = peticion.data;
       const medidores = datos.datos;
 

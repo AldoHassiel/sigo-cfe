@@ -12,7 +12,7 @@ function useAreas() {
     try {
       setCargando(true);
 
-      const peticion = await api.get<APIRespuesta<Area[]>>("/areas");
+      const peticion = await api.get<APIRespuesta<Area[]>>("/areas/");
       const datos = peticion.data;
 
       if (!datos.exito || !datos.datos) {
