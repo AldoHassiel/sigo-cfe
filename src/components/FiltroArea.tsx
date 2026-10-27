@@ -35,7 +35,7 @@ export default function FiltroArea({ onAreaChange }: Props) {
       onValueChange={(area: Area | null) => onAreaChange(area?.id ?? null)}
     >
       <ComboboxInput
-        className="w-64 bg-white"
+        className="min-w-48 flex-1 sm:w-64 sm:flex-none bg-white"
         placeholder={cargando ? "Cargando áreas..." : "Buscar área"}
         disabled={cargando}
         showClear

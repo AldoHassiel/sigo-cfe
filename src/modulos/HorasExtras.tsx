@@ -50,10 +50,10 @@ function HorasExtras() {
 
   return (
     <div>
-      <div className="flex justify-between items-center">
+      <div className="flex flex-wrap justify-between items-center gap-3">
         <h2 className="text-2xl font-bold">Horas extras</h2>
 
-        <div className="flex items-center gap-5">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
           <div className="flex items-center gap-1">
             <span className="block w-3 h-3 bg-red-500 rounded-full" />
             <span>Excede</span>

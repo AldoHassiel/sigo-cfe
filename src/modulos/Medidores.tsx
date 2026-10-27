@@ -61,10 +61,10 @@ export default function Medidores() {
 
   return (
     <div>
-      <div className="flex justify-between items-center">
+      <div className="flex flex-wrap justify-between items-center gap-3">
         <h2 className="font-bold text-2xl">Medidores</h2>
 
-        <div className="flex items-center gap-5">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
           <div className="flex items-center gap-1">
             <span className="block w-3 h-3 bg-red-500 rounded-full" />
             <span>Vencidos</span>
@@ -81,7 +81,7 @@ export default function Medidores() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex w-full flex-wrap items-center gap-3 sm:w-auto">
           <p className="font-bold">Filtros</p>
 
           <FiltroArea onAreaChange={filtrarPorArea} />

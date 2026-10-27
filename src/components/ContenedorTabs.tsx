@@ -4,7 +4,7 @@ import Modulos from "./Modulos";
 import { CATALOGO } from "@/modulos/catalogo";
 import { useTabs, ID_MODULOS } from "@/hooks/useTabs";
 
-const ESTILO_PANEL = "bg-gray-200/90 p-6 rounded-b-md rounded-tr-md";
+const ESTILO_PANEL = "bg-gray-200/90 p-3 sm:p-6 rounded-b-md rounded-tr-md";
 
 export default function ContenedorTabs() {
   const { abiertas, activa, abrir, cerrar, setActiva } = useTabs();
@@ -16,7 +16,7 @@ export default function ContenedorTabs() {
       className="w-full gap-0"
     >
       {/* ---- La barra de pestañas ---- */}
-      <TabsList className="bg-transparent p-0 rounded-none gap-0.5">
+      <TabsList className="bg-transparent p-0 rounded-none gap-0.5 max-w-full flex-wrap justify-start group-data-horizontal/tabs:h-auto *:min-h-8">
         <TabsTrigger
           value={ID_MODULOS}
           className="rounded-none rounded-t-md border-0 px-4 bg-gray-200 data-active:bg-gray-300 data-active:shadow-none!"
