@@ -1,4 +1,5 @@
 import FiltroArea from "@/components/FiltroArea";
+import FiltroRpe from "@/components/FiltroRpe";
 import SubirExcel from "@/components/SubirExcel";
 import {
   Select,
@@ -35,9 +36,12 @@ export default function Medidores() {
     medidores,
     filtroEstado,
     filtroArea,
+    filtroRpe,
+    rpes,
     cargando,
     filtrarPorEstado,
     filtrarPorArea,
+    filtrarPorRpe,
     subirMedidores,
     eliminarMedidores,
   } = useMedidores();
@@ -54,7 +58,8 @@ export default function Medidores() {
     !cargando &&
     medidores.length == 0 &&
     filtroEstado == "" &&
-    !filtroArea
+    !filtroArea &&
+    !filtroRpe
   ) {
     return <SubirExcel onExcelCargado={subirMedidores} />;
   }
@@ -85,6 +90,12 @@ export default function Medidores() {
           <p className="font-bold">Filtros</p>
 
           <FiltroArea onAreaChange={filtrarPorArea} />
+
+          <FiltroRpe
+            rpes={rpes}
+            valor={filtroRpe}
+            onRpeChange={filtrarPorRpe}
+          />
 
           <Select defaultValue="Todos" onValueChange={filtrarPorEstado}>
             <SelectTrigger>

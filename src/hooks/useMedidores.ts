@@ -8,6 +8,7 @@ function useMedidores() {
   const [todosLosMedidores, setTodosLosMedidores] = useState<Medidor[]>([]);
   const [filtroEstado, setFiltroEstado] = useState("");
   const [filtroArea, setFiltroArea] = useState<string | null>(null);
+  const [filtroRpe, setFiltroRpe] = useState("");
   const [cargando, setCargando] = useState(true);
 
   async function obtenerMedidores() {
@@ -84,26 +85,35 @@ function useMedidores() {
     // Limpia los filtros para que se muestre la pantalla de subir Excel
     setFiltroEstado("");
     setFiltroArea(null);
+    setFiltroRpe("");
   }
 
   useEffect(() => {
     obtenerMedidores();
   }, []);
 
-  // Aplica los dos filtros a la vez; si un filtro está vacío, no descarta nada
+  // Aplica todos los filtros a la vez; si un filtro está vacío, no descarta nada
   const medidores = todosLosMedidores.filter(
     (medidor) =>
       (!filtroEstado || medidor.estado === filtroEstado) &&
-      (!filtroArea || medidor.cvearea === filtroArea),
+      (!filtroArea || medidor.cvearea === filtroArea) &&
+      (!filtroRpe ||
+        medidor.rpe.toLowerCase().includes(filtroRpe.trim().toLowerCase())),
   );
+
+  // RPE sin repetir, ordenados, para las sugerencias del filtro
+  const rpes = [...new Set(todosLosMedidores.map((medidor) => medidor.rpe))].sort();
 
   return {
     medidores,
     filtroEstado,
     filtroArea,
+    filtroRpe,
+    rpes,
     cargando,
     filtrarPorEstado,
     filtrarPorArea: setFiltroArea,
+    filtrarPorRpe: setFiltroRpe,
     subirMedidores,
     eliminarMedidores,
   };

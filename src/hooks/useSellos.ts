@@ -8,6 +8,7 @@ function useSellos() {
   const [todosLosSellos, setTodosLosSellos] = useState<Sello[]>([]);
   const [filtroEstado, setFiltroEstado] = useState("");
   const [filtroArea, setFiltroArea] = useState<string | null>(null);
+  const [filtroRpe, setFiltroRpe] = useState("");
   const [cargando, setCargando] = useState(true);
 
   async function obtenerSellos() {
@@ -84,26 +85,35 @@ function useSellos() {
     // Limpia los filtros para que se muestre la pantalla de subir Excel
     setFiltroEstado("");
     setFiltroArea(null);
+    setFiltroRpe("");
   }
 
   useEffect(() => {
     obtenerSellos();
   }, []);
 
-  // Aplica los dos filtros a la vez; si un filtro está vacío, no descarta nada
+  // Aplica todos los filtros a la vez; si un filtro está vacío, no descarta nada
   const sellos = todosLosSellos.filter(
     (sello) =>
       (!filtroEstado || sello.estado === filtroEstado) &&
-      (!filtroArea || sello.cvearea === filtroArea),
+      (!filtroArea || sello.cvearea === filtroArea) &&
+      (!filtroRpe ||
+        sello.rpe.toLowerCase().includes(filtroRpe.trim().toLowerCase())),
   );
+
+  // RPE sin repetir, ordenados, para las sugerencias del filtro
+  const rpes = [...new Set(todosLosSellos.map((sello) => sello.rpe))].sort();
 
   return {
     sellos,
     filtroEstado,
     filtroArea,
+    filtroRpe,
+    rpes,
     cargando,
     filtrarPorEstado,
     filtrarPorArea: setFiltroArea,
+    filtrarPorRpe: setFiltroRpe,
     subirSellos,
     eliminarSellos,
   };

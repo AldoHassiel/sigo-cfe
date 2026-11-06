@@ -1,4 +1,5 @@
 import FiltroArea from "@/components/FiltroArea";
+import FiltroRpe from "@/components/FiltroRpe";
 import SubirExcel from "@/components/SubirExcel";
 import {
   Select,
@@ -37,9 +38,12 @@ export default function Sellos() {
     sellos,
     filtroEstado,
     filtroArea,
+    filtroRpe,
+    rpes,
     cargando,
     filtrarPorEstado,
     filtrarPorArea,
+    filtrarPorRpe,
     subirSellos,
     eliminarSellos,
   } = useSellos();
@@ -52,7 +56,13 @@ export default function Sellos() {
     );
   }
 
-  if (!cargando && sellos.length == 0 && filtroEstado == "" && !filtroArea) {
+  if (
+    !cargando &&
+    sellos.length == 0 &&
+    filtroEstado == "" &&
+    !filtroArea &&
+    !filtroRpe
+  ) {
     return <SubirExcel onExcelCargado={subirSellos} />;
   }
 
@@ -82,6 +92,12 @@ export default function Sellos() {
           <p className="font-bold">Filtros</p>
 
           <FiltroArea onAreaChange={filtrarPorArea} />
+
+          <FiltroRpe
+            rpes={rpes}
+            valor={filtroRpe}
+            onRpeChange={filtrarPorRpe}
+          />
 
           <Select defaultValue="Todos" onValueChange={filtrarPorEstado}>
             <SelectTrigger>
