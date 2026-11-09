@@ -38,42 +38,16 @@ function useHorasExtras() {
     }
   }
 
-  async function subirHorasExtrasExcel(excel: File) {
+  // Todas las fuentes van en una sola petición: la importación reemplaza
+  // todos los datos, así que mandarlas por separado borraría las anteriores
+  async function importarHorasExtras(archivos: File[], textos: string[]) {
     const formData = new FormData();
-    formData.append("archivo", excel);
+    archivos.forEach((archivo) => formData.append("archivos", archivo));
+    textos.forEach((texto) => formData.append("textos", texto));
 
     try {
       const peticion = await api.post<APIRespuesta<HorasExtras[]>>(
         "/horas-extras/importar",
-        formData,
-      );
-      const datos = peticion.data;
-
-      if (!datos.exito) {
-        throw new Error(datos.mensaje);
-      }
-
-      setHorasExtras(datos.datos);
-    } catch (error) {
-      if (isAxiosError<APIRespuesta<null>>(error)) {
-        if (error.response) {
-          throw new Error(error.response.data.mensaje);
-        }
-
-        throw new Error("No se pudo conectar con el servidor.");
-      }
-
-      throw error;
-    }
-  }
-
-  async function subirHorasExtrasTexto(tabla: string) {
-    const formData = new FormData();
-    formData.append("texto", tabla);
-
-    try {
-      const peticion = await api.post<APIRespuesta<HorasExtras[]>>(
-        "/horas-extras/importar-texto",
         formData,
       );
       const datos = peticion.data;
@@ -107,8 +81,7 @@ function useHorasExtras() {
   return {
     horasExtras,
     cargando,
-    subirHorasExtrasExcel,
-    subirHorasExtrasTexto,
+    importarHorasExtras,
     eliminarHoras,
   };
 }

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 
 import { CloudUploadIcon } from "lucide-react";
-import SubirExcel from "@/components/SubirExcel";
+import SubirHorasExtras from "@/components/SubirHorasExtras";
 import {
   Tooltip,
   TooltipContent,
@@ -23,13 +23,8 @@ const estiloFondoFila = {
 };
 
 function HorasExtras() {
-  const {
-    horasExtras,
-    cargando,
-    subirHorasExtrasExcel,
-    subirHorasExtrasTexto,
-    eliminarHoras,
-  } = useHorasExtras();
+  const { horasExtras, cargando, importarHorasExtras, eliminarHoras } =
+    useHorasExtras();
 
   if (cargando)
     return (
@@ -39,13 +34,7 @@ function HorasExtras() {
     );
 
   if (!cargando && horasExtras.length == 0) {
-    return (
-      <SubirExcel
-        permitirTexto
-        onExcelCargado={subirHorasExtrasExcel}
-        onTextoCargado={subirHorasExtrasTexto}
-      />
-    );
+    return <SubirHorasExtras onImportar={importarHorasExtras} />;
   }
 
   return (
@@ -83,6 +72,7 @@ function HorasExtras() {
           <TableRow>
             <TableHead>RPE</TableHead>
             <TableHead>Horas totales</TableHead>
+            <TableHead>Semanas excedidas</TableHead>
             <TableHead>Estado</TableHead>
           </TableRow>
         </TableHeader>
@@ -95,6 +85,9 @@ function HorasExtras() {
             >
               <TableCell>{horaExtra.rpe}</TableCell>
               <TableCell>{horaExtra.horas_totales}</TableCell>
+              <TableCell>
+                {horaExtra.semanas_excedidas} de {horaExtra.total_semanas}
+              </TableCell>
               <TableCell>
                 {horaExtra.excede_limite_semanal ? "Excede" : "Normal"}
               </TableCell>
