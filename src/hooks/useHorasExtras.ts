@@ -4,8 +4,20 @@ import api from "@/api/api.config";
 import type { APIRespuesta } from "@/types/apiRespuesta";
 import { isAxiosError } from "axios";
 
+export interface FilaHorasExtras {
+  rpe: string;
+  horas: string;
+  // null cuando se filtra por una semana
+  semanasExcedidas: number | null;
+  totalSemanas: number | null;
+  excede: boolean;
+}
+
 function useHorasExtras() {
   const [horasExtras, setHorasExtras] = useState<HorasExtras[]>([]);
+  const [filtroRpe, setFiltroRpe] = useState("");
+  // Lunes de la semana elegida (aaaa-mm-dd); null = todas las semanas
+  const [filtroSemana, setFiltroSemana] = useState<string | null>(null);
   const [cargando, setCargando] = useState(true);
 
   async function obtenerHorasExtras() {
@@ -72,15 +84,74 @@ function useHorasExtras() {
 
   function eliminarHoras() {
     setHorasExtras([]);
+    // Limpia los filtros para que se muestre la pantalla de subir archivos
+    setFiltroRpe("");
+    setFiltroSemana(null);
   }
 
   useEffect(() => {
     obtenerHorasExtras();
   }, []);
 
+  // Con una semana elegida, cada fila muestra solo las horas y el estado de
+  // esa semana; los RPE sin horas en esa semana no aparecen
+  const filas: FilaHorasExtras[] = horasExtras
+    .filter(
+      (horaExtra) =>
+        !filtroRpe ||
+        horaExtra.rpe.toLowerCase().includes(filtroRpe.trim().toLowerCase()),
+    )
+    .flatMap((horaExtra): FilaHorasExtras[] => {
+      if (!filtroSemana) {
+        return [
+          {
+            rpe: horaExtra.rpe,
+            horas: horaExtra.horas_totales,
+            semanasExcedidas: horaExtra.semanas_excedidas,
+            totalSemanas: horaExtra.total_semanas,
+            excede: horaExtra.excede_limite_semanal,
+          },
+        ];
+      }
+
+      const semana = horaExtra.semanas.find((s) => s.semana === filtroSemana);
+      if (!semana) return [];
+
+      return [
+        {
+          rpe: horaExtra.rpe,
+          horas: semana.horas,
+          semanasExcedidas: null,
+          totalSemanas: null,
+          excede: semana.excede_limite_semanal,
+        },
+      ];
+    });
+
+  // RPE sin repetir, ordenados, para las sugerencias del filtro
+  const rpes = horasExtras.map((horaExtra) => horaExtra.rpe).sort();
+
+  // Semanas que aparecen en los datos importados, de la más reciente a la más antigua
+  const semanas = [
+    ...new Set(
+      horasExtras.flatMap((horaExtra) =>
+        horaExtra.semanas.map((s) => s.semana),
+      ),
+    ),
+  ]
+    .sort()
+    .reverse();
+
   return {
     horasExtras,
+    filas,
+    filtroRpe,
+    filtroSemana,
+    rpes,
+    semanas,
     cargando,
+    filtrarPorRpe: setFiltroRpe,
+    filtrarPorSemana: setFiltroSemana,
     importarHorasExtras,
     eliminarHoras,
   };
